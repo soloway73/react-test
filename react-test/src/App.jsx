@@ -1,7 +1,12 @@
 import "./App.css";
-import Button from "./components/Button/Button";
+//import Button from "./components/Button/Button";
 import JournalItem from "./components/JournalItem/JournalItem";
 import CardButton from "./components/CardButton/CardButton";
+import LeftPanel from "./layouts/LeftPanel/LeftPanel";
+import Body from "./layouts/Body/Body";
+import Header from "./components/Header/Header";
+import JournalList from "./components/JournalList/JournalList";
+import JournaAddButton from "./components/JournalAddButton/JournalAddButton";
 function App() {
   const data = [
     {
@@ -17,25 +22,29 @@ function App() {
   ];
 
   return (
-    <>
-      <div>Заголовок</div>
-      <Button />
-      <CardButton>Новое воспоминание</CardButton>
-      <CardButton>
-        <JournalItem
-          title={data[0].title}
-          text={data[0].text}
-          date={data[0].date}
-        />
-      </CardButton>
-      <CardButton>
-        <JournalItem
-          title={data[1].title}
-          text={data[1].text}
-          date={data[1].date}
-        />
-      </CardButton>
-    </>
+    <div className="app">
+      <LeftPanel>
+        <Header />
+        <JournaAddButton />
+        <JournalList>
+          <CardButton>
+            <JournalItem
+              title={data[0].title}
+              text={data[0].text}
+              date={data[0].date}
+            />
+          </CardButton>
+          <CardButton>
+            <JournalItem
+              title={data[1].title}
+              text={data[1].text}
+              date={data[1].date}
+            />
+          </CardButton>
+        </JournalList>
+      </LeftPanel>
+      <Body>Body</Body>
+    </div>
   );
 }
 
