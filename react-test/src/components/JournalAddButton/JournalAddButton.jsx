@@ -1,7 +1,7 @@
 import CardButton from "../CardButton/CardButton";
 import "./JournalAddButton.css";
 
-function JournaAddButton() {
+function JournalAddButton() {
   return (
     <CardButton className="journal-add">
       <svg
@@ -31,4 +31,4 @@ function JournaAddButton() {
   );
 }
 
-export default JournaAddButton;
+export default JournalAddButton;
