@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import { useEffect, useReducer, useRef } from "react";
 import cn from "classnames";
 import { INITIAL_STATE, formReducer } from "./JournalForm.state";
-
+import Input from "../Input/Input";
 function JournalForm({ onSubmit }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, isFormReadyToSubmit, values } = formState;
@@ -60,15 +60,14 @@ function JournalForm({ onSubmit }) {
     <>
       <form className={styles["journal-form"]} onSubmit={addJournalItem}>
         <div>
-          <input
+          <Input
             type="text"
             name="title"
             ref={titleRef}
+            isValid={isValid.title}
             value={values.title}
             onChange={onChange}
-            className={cn(styles["input-title"], {
-              [styles["invalid"]]: !isValid.title,
-            })}
+            appearence="title"
           />
         </div>
         <div className={styles["form-row"]}>
@@ -76,16 +75,14 @@ function JournalForm({ onSubmit }) {
             <img src="/calendar.svg" alt="иконка календаря" />
             <span>Дата</span>
           </label>
-          <input
+          <Input
             type="date"
             name="date"
             id="date"
             ref={dateRef}
+            isValid={isValid.date}
             value={values.date}
             onChange={onChange}
-            className={cn(styles["input"], {
-              [styles["invalid"]]: !isValid.date,
-            })}
           />
         </div>
         <div className={styles["form-row"]}>
@@ -93,13 +90,12 @@ function JournalForm({ onSubmit }) {
             <img src="/folder.svg" alt="иконка папки" />
             <span>Метки</span>
           </label>
-          <input
+          <Input
             type="text"
             name="tag"
             value={values.tag}
             onChange={onChange}
             id="tag"
-            className={styles["input"]}
           />
         </div>
         <textarea
