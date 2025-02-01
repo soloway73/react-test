@@ -4,6 +4,7 @@ import { useEffect, useReducer, useRef } from "react";
 import cn from "classnames";
 import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 import Input from "../Input/Input";
+import { UserContext } from "../../context/user.context";
 function JournalForm({ onSubmit }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, isFormReadyToSubmit, values } = formState;
@@ -43,7 +44,7 @@ function JournalForm({ onSubmit }) {
       onSubmit(values);
       dispatchForm({ type: "CLEAR" });
     }
-  }, [isFormReadyToSubmit]);
+  }, [isFormReadyToSubmit, values, onSubmit]);
 
   const onChange = (e) => {
     dispatchForm({
@@ -57,62 +58,65 @@ function JournalForm({ onSubmit }) {
   };
 
   return (
-    <>
-      <form className={styles["journal-form"]} onSubmit={addJournalItem}>
-        <div>
-          <Input
-            type="text"
-            name="title"
-            ref={titleRef}
-            isValid={isValid.title}
-            value={values.title}
+    <UserContext.Consumer>
+      {(context) => (
+        <form className={styles["journal-form"]} onSubmit={addJournalItem}>
+          {context.userId}
+          <div>
+            <Input
+              type="text"
+              name="title"
+              ref={titleRef}
+              isValid={isValid.title}
+              value={values.title}
+              onChange={onChange}
+              appearence="title"
+            />
+          </div>
+          <div className={styles["form-row"]}>
+            <label htmlFor="date" className={styles["form-label"]}>
+              <img src="/calendar.svg" alt="иконка календаря" />
+              <span>Дата</span>
+            </label>
+            <Input
+              type="date"
+              name="date"
+              id="date"
+              ref={dateRef}
+              isValid={isValid.date}
+              value={values.date}
+              onChange={onChange}
+            />
+          </div>
+          <div className={styles["form-row"]}>
+            <label htmlFor="tag" className={styles["form-label"]}>
+              <img src="/folder.svg" alt="иконка папки" />
+              <span>Метки</span>
+            </label>
+            <Input
+              type="text"
+              name="tag"
+              value={values.tag}
+              onChange={onChange}
+              id="tag"
+            />
+          </div>
+          <textarea
+            name="text"
+            id=""
+            cols="30"
+            rows="20"
+            ref={textRef}
+            value={values.text}
             onChange={onChange}
-            appearence="title"
-          />
-        </div>
-        <div className={styles["form-row"]}>
-          <label htmlFor="date" className={styles["form-label"]}>
-            <img src="/calendar.svg" alt="иконка календаря" />
-            <span>Дата</span>
-          </label>
-          <Input
-            type="date"
-            name="date"
-            id="date"
-            ref={dateRef}
-            isValid={isValid.date}
-            value={values.date}
-            onChange={onChange}
-          />
-        </div>
-        <div className={styles["form-row"]}>
-          <label htmlFor="tag" className={styles["form-label"]}>
-            <img src="/folder.svg" alt="иконка папки" />
-            <span>Метки</span>
-          </label>
-          <Input
-            type="text"
-            name="tag"
-            value={values.tag}
-            onChange={onChange}
-            id="tag"
-          />
-        </div>
-        <textarea
-          name="text"
-          id=""
-          cols="30"
-          rows="20"
-          ref={textRef}
-          value={values.text}
-          onChange={onChange}
-          className={cn(styles["input"], {
-            [styles["invalid"]]: !isValid.text,
-          })}
-        ></textarea>
-        <Button text="Сохранить"></Button>
-      </form>
-    </>
+            className={cn(styles["input"], {
+              [styles["invalid"]]: !isValid.text,
+            })}
+          ></textarea>
+          <Button text="Сохранить"></Button>
+        </form>
+      )}
+    </UserContext.Consumer>
   );
 }
 
