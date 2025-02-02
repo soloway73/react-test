@@ -48,6 +48,13 @@ function JournalForm({ onSubmit }) {
     }
   }, [isFormReadyToSubmit, values, onSubmit]);
 
+  useEffect(() => {
+    dispatchForm({
+      type: "SET_VALUE",
+      payload: { userId },
+    });
+  }, [userId]);
+
   const onChange = (e) => {
     dispatchForm({
       type: "SET_VALUE",
@@ -61,7 +68,6 @@ function JournalForm({ onSubmit }) {
 
   return (
     <form className={styles["journal-form"]} onSubmit={addJournalItem}>
-      {userId}
       <div>
         <Input
           type="text"
@@ -102,15 +108,15 @@ function JournalForm({ onSubmit }) {
         />
       </div>
       <textarea
-        name="text"
+        name="post"
         id=""
         cols="30"
         rows="20"
         ref={textRef}
-        value={values.text}
+        value={values.post}
         onChange={onChange}
         className={cn(styles["input"], {
-          [styles["invalid"]]: !isValid.text,
+          [styles["invalid"]]: !isValid.post,
         })}
       ></textarea>
       <Button text="Сохранить"></Button>
