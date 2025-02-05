@@ -26,6 +26,10 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  white-space: nowrap; /* Запрещает перенос текста на новую строку */
+  overflow: hidden; /* Скрывает избыточный контент */
+  text-overflow: ellipsis; /* Добавляет три точки при обрезании текста */
+  max-width: 370px; /* Ограничивает ширину элемента приблизительно 370пх */
 }
 .journal-item__body {
   display: flex;
