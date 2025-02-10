@@ -1,19 +1,11 @@
-import { useReducer } from "react";
 import "./CardButton.css";
-function CardButton({ children, className, el }) {
-  const cl = "card-button" + (className ? " " + className : "");
-  const { dispatchForm } = useReducer();
 
-  const getCardData = () => {
-    dispatchForm({
-      type: "EDIT",
-      payload: { el },
-    });
-  };
+function CardButton({ children, className, ...props }) {
+  const cl = "card-button" + (className ? " " + className : "");
 
   return (
     <>
-      <button className={cl} onClick={getCardData}>
+      <button {...props} className={cl}>
         {children}
       </button>
     </>
