@@ -6,7 +6,7 @@ import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 import Input from "../Input/Input";
 import { UserContext } from "../../context/user.context";
 
-function JournalForm({ onSubmit, data }) {
+function JournalForm({ onSubmit, data, removeItem }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
   const { isValid, isFormReadyToSubmit, values } = formState;
   const titleRef = useRef();
@@ -52,6 +52,10 @@ function JournalForm({ onSubmit, data }) {
     if (isFormReadyToSubmit) {
       onSubmit(values);
       dispatchForm({ type: "CLEAR" });
+      dispatchForm({
+        type: "SET_VALUE",
+        payload: { userId },
+      });
     }
   }, [isFormReadyToSubmit, values, onSubmit, userId]);
 
@@ -72,10 +76,18 @@ function JournalForm({ onSubmit, data }) {
     e.preventDefault();
     dispatchForm({ type: "SUBMIT" });
   };
-
+  const handleClick = (e) => {
+    e.preventDefault();
+    removeItem?.();
+    dispatchForm({ type: "CLEAR" });
+    dispatchForm({
+      type: "SET_VALUE",
+      payload: { userId },
+    });
+  };
   return (
     <form className={styles["journal-form"]} onSubmit={addJournalItem}>
-      <div>
+      <div className={styles["titleWrapper"]}>
         <Input
           type="text"
           name="title"
@@ -85,6 +97,11 @@ function JournalForm({ onSubmit, data }) {
           onChange={onChange}
           appearence="title"
         />
+        {data.id && (
+          <button className={styles["removeBtn"]} onClick={handleClick}>
+            <img src="archive.svg"></img>
+          </button>
+        )}
       </div>
       <div className={styles["form-row"]}>
         <label htmlFor="date" className={styles["form-label"]}>
@@ -98,7 +115,7 @@ function JournalForm({ onSubmit, data }) {
           ref={dateRef}
           isValid={isValid.date}
           value={
-            values.date ? new Date(values.date.toISOString().slice(0, 10)) : ""
+            values.date ? new Date(values.date).toISOString().slice(0, 10) : ""
           }
           onChange={onChange}
         />

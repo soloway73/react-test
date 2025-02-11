@@ -14,12 +14,6 @@ export const INITIAL_STATE = {
 };
 export function formReducer(state, action) {
   switch (action.type) {
-    case "EDIT":
-      return {
-        ...state,
-        values: action.payload,
-        isFormReadyToSubmit: true,
-      };
     case "SET_VALUE":
       return { ...state, values: { ...state.values, ...action.payload } };
     case "CLEAR":

@@ -26,6 +26,11 @@ function App() {
   const [items, setItems] = useLocalStorage("data");
   const [selectedItem, setSelectedItem] = useState({});
 
+  const removeItem = () => {
+    if (selectedItem.id) {
+      setItems([...items.filter((i) => i.id !== selectedItem.id)]);
+    }
+  };
   const addItem = (item) => {
     if (!item.id) {
       setItems([
@@ -62,7 +67,11 @@ function App() {
           ></JournalList>
         </LeftPanel>
         <Body>
-          <JournalForm onSubmit={addItem} data={selectedItem}></JournalForm>
+          <JournalForm
+            onSubmit={addItem}
+            data={selectedItem}
+            removeItem={removeItem}
+          ></JournalForm>
         </Body>
       </div>
     </UserContextProvider>
